@@ -9,6 +9,8 @@ set -o pipefail
 CLIENT_USER="your_client_username" # Customize this
 CLIENT_HOST="your_client_hostname.local" # Customize this
 SERVER_HOST="your_server_hostname.local" # Customize this
+INPUT_LEAP_VERSION=${1:-"v3.0.3"} # Default to v3.0.3, or use first argument
+DOWNLOAD_URL="https://github.com/input-leap/input-leap/releases/download/${INPUT_LEAP_VERSION}/macOS-Apple_Silicon-debug-${INPUT_LEAP_VERSION}.tar.gz"
 INPUTLEAP_REPO="https://github.com/input-leap/input-leap.git"
 INSTALL_DIR="$PWD/input-leap"
 CONFIG_FILE="$HOME/input-leap.sgc"
@@ -63,7 +65,6 @@ cd "$INSTALL_DIR"
 
 if [ ! -f "input-leap.tar.gz" ]; then
     echo "📥 Downloading prebuilt Input Leap for Apple Silicon..."
-    DOWNLOAD_URL="https://github.com/input-leap/input-leap/releases/download/v3.0.3/macOS-Apple_Silicon-debug-v3.0.3.tar.gz"
     curl -L "$DOWNLOAD_URL" -o input-leap.tar.gz
     check_command_success "Downloading Input Leap"
 else
@@ -130,7 +131,7 @@ echo "✅ Server started"
 
 # === Prepare client remotely ===
 echo "📡 Setting up MacBook Pro client ($CLIENT_HOST)..."
-ssh -o ConnectTimeout=30 "$CLIENT_USER@$CLIENT_HOST" bash <<'EOSSH'
+ssh -o ConnectTimeout=30 "$CLIENT_USER@$CLIENT_HOST" bash <<EOSSH
   set -e
   set -u
   set -o pipefail
@@ -145,8 +146,7 @@ ssh -o ConnectTimeout=30 "$CLIENT_USER@$CLIENT_HOST" bash <<'EOSSH'
   
   if [ ! -f "input-leap.tar.gz" ]; then
       echo "📥 Downloading prebuilt Input Leap on client..."
-      DOWNLOAD_URL="https://github.com/input-leap/input-leap/releases/download/v3.0.3/macOS-Apple_Silicon-debug-v3.0.3.tar.gz"
-      curl -L "$DOWNLOAD_URL" -o input-leap.tar.gz
+      curl -L "${DOWNLOAD_URL}" -o input-leap.tar.gz
   else
       echo "✅ Input Leap archive already exists on client."
   fi
