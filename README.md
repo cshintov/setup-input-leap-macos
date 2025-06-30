@@ -22,7 +22,7 @@ This repository provides two scripts to help you set up and start Input Leap (a 
 
 1.  **Clone this repository** to your server machine.
 2.  **Customize the scripts**: Open `setup-input-leap.sh` and `start-input-leap.sh` and update the `CLIENT_USER`, `CLIENT_HOST`, and `SERVER_HOST` variables with your specific details.
-3.  **Run the setup script**: Execute `./setup-input-leap.sh` on your server machine. This will download and configure Input Leap on both machines.
+3.  **Run the setup script**: Execute `./setup-input-leap.sh` on your server machine. You can optionally provide an Input Leap version as an argument (e.g., `./setup-input-leap.sh v3.0.4`). This will download and configure Input Leap on both machines.
 
 ## Usage
 
